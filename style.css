@@ -1,0 +1,755 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #050008;
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont,
+                 "Segoe UI", sans-serif;
+
+    overflow-x: hidden;
+}
+
+
+/* =========================
+   LOADING SCREEN
+========================= */
+
+#loader {
+    position: fixed;
+    inset: 0;
+
+    background:
+        radial-gradient(circle at center,
+        #28001f,
+        #050008 65%);
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+
+    transition: opacity 1s ease,
+                visibility 1s ease;
+}
+
+#loader.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-heart {
+    font-size: 70px;
+
+    animation:
+        heartbeat 1s infinite;
+
+    filter:
+        drop-shadow(0 0 25px #ff2f92)
+        drop-shadow(0 0 60px #ff2f92);
+}
+
+#loader p {
+    margin-top: 25px;
+
+    color: #ffb7d9;
+
+    letter-spacing: 4px;
+
+    font-size: 12px;
+
+    text-transform: uppercase;
+}
+
+.loading-line {
+    width: 180px;
+    height: 2px;
+
+    background: rgba(255,255,255,.1);
+
+    margin-top: 20px;
+
+    overflow: hidden;
+}
+
+.loading-line div {
+    width: 0%;
+    height: 100%;
+
+    background: #ff3b98;
+
+    animation: loading 2.5s forwards;
+}
+
+
+/* =========================
+   PARTICLES
+========================= */
+
+#particles {
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+/* =========================
+   MOUSE GLOW
+========================= */
+
+#cursorGlow {
+    position: fixed;
+
+    width: 350px;
+    height: 350px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 47, 146, .16),
+            transparent 70%
+        );
+
+    pointer-events: none;
+
+    transform: translate(-50%, -50%);
+
+    z-index: 1;
+
+    mix-blend-mode: screen;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    min-height: 100vh;
+
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    justify-content: center;
+
+    text-align: center;
+
+    padding:
+        120px 20px 100px;
+}
+
+.hero-content {
+    width: 100%;
+    max-width: 900px;
+}
+
+
+/* =========================
+   TEXT
+========================= */
+
+.eyebrow {
+    color: #ff7fba;
+
+    letter-spacing: 7px;
+
+    font-size: 11px;
+
+    margin-bottom: 25px;
+
+    opacity: 0;
+
+    animation:
+        fadeUp 1s 2.6s forwards;
+}
+
+h1 {
+    font-size: clamp(
+        60px,
+        15vw,
+        160px
+    );
+
+    font-weight: 800;
+
+    letter-spacing: -6px;
+
+    line-height: .9;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ffffff,
+            #ff7ab9,
+            #ffffff,
+            #ff3b98,
+            #ffffff
+        );
+
+    background-size: 300%;
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    animation:
+        nameGlow 5s linear infinite,
+        fadeUp 1.3s 2.3s both;
+
+    text-shadow:
+        0 0 50px rgba(255,47,146,.3);
+}
+
+.heart-line {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    margin: 35px auto;
+
+    color: #ff3b98;
+
+    font-size: 20px;
+
+    opacity: 0;
+
+    animation:
+        fadeUp 1s 3s forwards;
+}
+
+.heart-line span {
+    height: 1px;
+
+    width: 80px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #ff3b98
+        );
+}
+
+.heart-line span:last-child {
+    background:
+        linear-gradient(
+            90deg,
+            #ff3b98,
+            transparent
+        );
+}
+
+.intro {
+    color: #d9bccc;
+
+    line-height: 1.8;
+
+    font-size: 18px;
+
+    opacity: 0;
+
+    animation:
+        fadeUp 1s 3.3s forwards;
+}
+
+
+/* =========================
+   PHOTO
+========================= */
+
+.photo-wrapper {
+    margin: 55px auto 20px;
+
+    width: 330px;
+
+    height: 430px;
+
+    perspective: 1000px;
+
+    opacity: 0;
+
+    animation:
+        photoReveal 1.5s 3.8s forwards;
+}
+
+.photo-card {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 10px;
+
+    border-radius: 30px;
+
+    background:
+        rgba(255,255,255,.07);
+
+    border:
+        1px solid rgba(255,255,255,.18);
+
+    backdrop-filter:
+        blur(20px);
+
+    overflow: hidden;
+
+    transform-style: preserve-3d;
+
+    box-shadow:
+        0 30px 100px rgba(0,0,0,.6),
+        0 0 60px rgba(255,47,146,.15);
+
+    transition:
+        transform .15s ease;
+}
+
+.photo-card img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 22px;
+
+    display: block;
+}
+
+.photo-glow {
+    position: absolute;
+
+    inset: -50px;
+
+    border-radius: 50%;
+
+    background:
+        conic-gradient(
+            #ff007f,
+            #7b2cff,
+            #ff007f
+        );
+
+    filter: blur(60px);
+
+    opacity: .25;
+
+    animation:
+        rotateGlow 5s linear infinite;
+}
+
+.photo-shine {
+    position: absolute;
+
+    top: -100%;
+
+    left: -100%;
+
+    width: 50%;
+    height: 300%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.3),
+            transparent
+        );
+
+    transform: rotate(25deg);
+
+    animation:
+        shinePhoto 5s infinite;
+}
+
+.hint {
+    color: #806a78;
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 35px;
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+#loveButton {
+    position: relative;
+
+    border: 1px solid
+        rgba(255,255,255,.2);
+
+    padding: 18px 35px;
+
+    border-radius: 100px;
+
+    background:
+        linear-gradient(
+            100deg,
+            #ff167f,
+            #ff4ca4
+        );
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    letter-spacing: .5px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 10px 40px rgba(255,22,127,.35);
+
+    transition: .3s;
+
+    overflow: hidden;
+}
+
+#loveButton::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.35),
+            transparent
+        );
+
+    transform:
+        translateX(-100%);
+
+    transition: .6s;
+}
+
+#loveButton:hover::before {
+    transform:
+        translateX(100%);
+}
+
+#loveButton:hover {
+    transform:
+        translateY(-5px)
+        scale(1.05);
+
+    box-shadow:
+        0 20px 60px
+        rgba(255,22,127,.6);
+}
+
+#loveButton b {
+    margin-left: 8px;
+}
+
+
+/* =========================
+   SURPRISE
+========================= */
+
+#surprise {
+    max-height: 0;
+
+    opacity: 0;
+
+    overflow: hidden;
+
+    transition:
+        max-height 2s ease,
+        opacity 1s ease;
+
+    margin-top: 0;
+}
+
+#surprise.show {
+    max-height: 1000px;
+
+    opacity: 1;
+
+    margin-top: 100px;
+}
+
+.surprise-inner {
+    padding: 70px 30px;
+
+    border-radius: 35px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.08),
+            rgba(255,255,255,.025)
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    backdrop-filter:
+        blur(25px);
+
+    box-shadow:
+        0 40px 100px
+        rgba(0,0,0,.5);
+}
+
+.big-heart {
+    font-size: 70px;
+
+    filter:
+        drop-shadow(
+            0 0 30px #ff2f92
+        );
+
+    animation:
+        heartbeat 1.4s infinite;
+}
+
+.small-title {
+    margin-top: 25px;
+
+    color: #ff7fba;
+
+    font-size: 11px;
+
+    letter-spacing: 5px;
+}
+
+h2 {
+    font-size:
+        clamp(35px, 7vw, 70px);
+
+    margin-top: 20px;
+
+    line-height: 1.05;
+}
+
+h2 span {
+    color: #ff4da5;
+}
+
+.divider {
+    width: 80px;
+
+    height: 2px;
+
+    background: #ff3b98;
+
+    margin: 35px auto;
+}
+
+.love-text {
+    max-width: 600px;
+
+    margin: auto;
+
+    color: #e7d2df;
+
+    font-size: 17px;
+
+    line-height: 1.9;
+}
+
+.signature {
+    margin-top: 40px;
+
+    color: #ff9dcc;
+
+    font-size: 15px;
+}
+
+
+/* =========================
+   FLOATING HEARTS
+========================= */
+
+.floating-heart {
+    position: fixed;
+
+    pointer-events: none;
+
+    z-index: 100;
+
+    animation:
+        heartExplosion 3s
+        cubic-bezier(.2,.8,.2,1)
+        forwards;
+}
+
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes loading {
+
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes heartbeat {
+
+    0%,100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+@keyframes fadeUp {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+@keyframes nameGlow {
+
+    0% {
+        background-position: 0%;
+    }
+
+    100% {
+        background-position: 300%;
+    }
+}
+
+@keyframes photoReveal {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(80px)
+            scale(.8)
+            rotateX(20deg);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1)
+            rotateX(0);
+    }
+}
+
+@keyframes rotateGlow {
+
+    to {
+        transform:
+            rotate(360deg);
+    }
+}
+
+@keyframes shinePhoto {
+
+    0%,70% {
+        left: -150%;
+    }
+
+    100% {
+        left: 200%;
+    }
+}
+
+@keyframes heartExplosion {
+
+    0% {
+        transform:
+            translate(0,0)
+            scale(.3)
+            rotate(0deg);
+
+        opacity: 1;
+    }
+
+    100% {
+        transform:
+            translate(
+                var(--x),
+                var(--y)
+            )
+            scale(1.4)
+            rotate(720deg);
+
+        opacity: 0;
+    }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px) {
+
+    .hero {
+        padding-top: 90px;
+    }
+
+    h1 {
+        letter-spacing: -3px;
+    }
+
+    .photo-wrapper {
+        width: min(300px,85vw);
+
+        height: 390px;
+    }
+
+    .intro {
+        font-size: 16px;
+    }
+
+    #cursorGlow {
+        display: none;
+    }
+}
